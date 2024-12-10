@@ -9,7 +9,7 @@ export const AppTheme = createTheme({
             main:"#401d08"
         },
         background: {
-            default: "#f2ddb3",
+            default: "linear-gradient(to bottom, #f2ddb3, #f9c3a0, #ffffff)",
         },
         textColor: {
             main: "#000000"

@@ -5,28 +5,21 @@ import { ThemeProvider } from '@emotion/react';
 import { AppTheme } from './theme/AppTheme';
 import { Box, CssBaseline } from '@mui/material';
 import {Home} from './component/Home/Home'
+import RestaurantDetails from './component/Restaurant/RestaurantDetails';
+
 
 
 function App() {
   return (
     <ThemeProvider theme={AppTheme}>
+
     <div className='App'>
       <CssBaseline/>
       <Navbar/>
-      <Home />
-      <Box
-        sx={{
-          background: `linear-gradient(to bottom, #f2ddb3, #f9c3a0, #ffffff)`,
-          width: "100%",
-          height: "100vh",
-        }}
-        
-        
-      />
-      
-      
-      
+      {/* Home */}
+      <RestaurantDetails/>
     </div>
+    
     </ThemeProvider>
   );
 }
