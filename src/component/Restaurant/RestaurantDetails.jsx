@@ -4,25 +4,30 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import urbanLogo from './restaurantAssets/urbanLogo.png'
+import smokersLogo from './restaurantAssets/smokersLogo.png'
 import { Divider, FormControl, FormControlLabel, Radio, RadioGroup, Typography } from "@mui/material";
-
+import MenuCard from "./MenuCard";
 
 const categories = [
-    "pizza",
     "burger",
+    "sandwich",
+    "club sandwich",
     "crepe",
     "giros",
-    "pasta"
-]
+    "pasta",
+];
+
+const menu = [1,1,1,1,1,1]
 
 const RestaurantDetails = () => {
     const restaurant = {
         image: restaurantImage,
-        name: "Urban Burger Co.",
-        description: "A place where taste meets the best quality food.",
-        address: "123 Foodie Street, Tasteville",
-        openingHours: "Open: 9 AM - 10 PM",
+        name: "Smokers",
     };
+
+    const handleFilter = (e) => {
+        console.log(e.target.value, e.target.name)
+    }
 
     return (
         <div className="">
@@ -42,7 +47,7 @@ const RestaurantDetails = () => {
                     }}>
                     <div className="flex items-center gap-3">
                         <img 
-                            src={urbanLogo}
+                            src={smokersLogo}
                             alt="logo"
                             className="w-12 h-12 object-contain rounded-full"
                             />
@@ -71,27 +76,32 @@ const RestaurantDetails = () => {
 
             </section>
             
-            <section className="pt-[2rem] lg:flex relative">
-
-            <div className="space-y-10 lg:w-[20%] filter">
+            <section className="pt-[7rem] lg:flex relative">
+                <div className="space-y-10 lg:w-[20%] filter ">
                     <div className="box space-y-5 lg:sticky top-28">
-                        <div>
+                        <div className="pl-[4.5rem]">
                             <Typography variant="h5" sx={{paddingBottom:"1rem"}}>
                                 Κατηγορίες
                             </Typography>
 
                             <FormControl className="py-10 space-y-5" component={"fieldset"}>
-                                <RadioGroup>
-                                    {categories.map((item) => <FormControlLabel value={item} control={<Radio/>}
-                                    label={item} />)}
+                                <RadioGroup onChange={handleFilter} name="categories">
+                                    {categories.map((item) => (
+                                    <FormControlLabel 
+                                    key={item}
+                                    value={item} 
+                                    control={<Radio/>}
+                                    label={item} 
+                                    />
+                                ))}
                                 </RadioGroup>
                             </FormControl>
                         </div>
                     </div>
-            </div>
+                </div>
 
-            <div className="space-y-5 lg:w-[80%] lg:pl-10">
-                    menu        
+            <div className="space-y-5 lg:w-[80%] pr-[4.5rem] lg:pl-10">
+                    {menu.map((item) =><MenuCard/>)}      
             </div>
 
             </section>

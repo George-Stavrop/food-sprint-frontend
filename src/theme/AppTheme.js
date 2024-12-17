@@ -3,7 +3,7 @@ const { createTheme } = require("@mui/material");
 export const AppTheme = createTheme({
     palette:{
         primary: {
-            main:"#401d08"
+            main:"#f27022"
         },
         secondary: {
             main:"#401d08"
@@ -13,6 +13,7 @@ export const AppTheme = createTheme({
         },
         textColor: {
             main: "#000000"
-        }   
+        },
+        
     },
 })

@@ -6,6 +6,7 @@ import { AppTheme } from './theme/AppTheme';
 import { Box, CssBaseline } from '@mui/material';
 import {Home} from './component/Home/Home'
 import RestaurantDetails from './component/Restaurant/RestaurantDetails';
+import Cart from './component/Cart/Cart';
 
 
 
@@ -17,7 +18,8 @@ function App() {
       <CssBaseline/>
       <Navbar/>
       {/* Home */}
-      <RestaurantDetails/>
+      {/*<RestaurantDetails/>*/}
+      <Cart/>
     </div>
     
     </ThemeProvider>
