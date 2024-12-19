@@ -32,7 +32,7 @@ const initialValues = {
 const validationSchema = yup.object().shape({
     streetAddress: yup.string().required("Διάλεξε Οδό!!"),
     area: yup.string().required("Διάλεξε περιοχή!!"),
-    pincode: yup.string().required("O ΤΚ είναι υποχρεωτικος!!"),
+    pincode: yup.string().required("Διάλεξε ΤΚ!!"),
     city: yup.string().required("Διάλεξε Πόλη!!")
 })
 
