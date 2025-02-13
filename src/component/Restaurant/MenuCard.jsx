@@ -1,29 +1,45 @@
 import { Accordion, AccordionDetails, AccordionSummary, Button, Checkbox, FormControlLabel, FormGroup } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import classiccheese from './restaurantAssets/classiccheese.avif';
+import { categorizeIngredients } from "../util/categorizeIngredients";
+import { useDispatch } from "react-redux";
+import { addItemToCart } from "../State/Cart/Action";
 
 
-const ingredients = [
-    {
-        category: "Πρωτείνη",
-        ingredients: ["μπιφτέκι από μοσχαρίσιο κιμά 140gr","φιλέτο κοτόπουλου"]
-    },
-    {
-        category: "Υλικά",
-        ingredients: ["Cheddar","Κρεμμύδι","Μπέικον","Πίκλες","Αυγό Τηγανητό"]
-    },
-    {
-        category: "Sauce",
-        ingredients: ["Ketchup","Μουστάρδα","Μαγιονέζα","Pickle Sauce","Sauce Γιαουρτιού"]
+
+
+const MenuCard = ({ item }) => {
+
+    const dispatch = useDispatch()
+
+    const [selectedIngredients, setSelectedIngredients] = useState([]);
+
+
+    const handleCheckBoxChange = (itemName) => {
+        if (selectedIngredients.includes(itemName)) {
+            setSelectedIngredients(selectedIngredients.filter((item) => item !== itemName))
+        } else {
+            setSelectedIngredients([...selectedIngredients, itemName])
+        }
     }
-]
 
-const MenuCard = () => {
-    
-    const handleCheckBoxChange = (value) => {
-        console.log(value)
+    const handleAddItemToCart = (e) => {
+        e.preventDefault()
+        const reqData = {
+            token: localStorage.getItem("jwt"),
+            cartItem: {
+                foodId: item.id,
+                quantity: 1,
+                ingredients: selectedIngredients,
+            }
+        }
+
+        dispatch(addItemToCart(reqData))
+
+        console.log("req data", reqData);
     }
+
 
 
     return (
@@ -38,39 +54,41 @@ const MenuCard = () => {
             >
                 <div className="lg:flex items-start justify-between">
                     <div className="flex items-start">
-                        <img 
-                            className="w-[7rem] h-[7rem] object-cover rounded-lg" 
-                            src={classiccheese} 
-                            alt="burger" 
+                        <img
+                            className="w-[7rem] h-[7rem] object-cover rounded-lg"
+                            src={item.images[0]}
+                            alt="burger"
                         />
                         <div className="ml-4 space-y-1 lg:space-y-5 lg:max-w-2xl">
                             <p className="font-semibold text-xl" style={{ fontFamily: "Kodchasan" }}>
-                              Burger
+                                {item.name}
                             </p>
-                            <p>5,50&euro;</p>
+                            <p>{item.price}&euro;</p>
                             <p className="text-gray-500">
-                                Χειροποίητο ψωμάκι σουσαμένιο αφράτο με μπιφτέκι μοσχαρίσιο
+                                {item.description}
                             </p>
                         </div>
                     </div>
                 </div>
             </AccordionSummary>
             <AccordionDetails className="bg-white">
-                <form >
+                <form onSubmit={handleAddItemToCart}>
                     <div className="flex gap-5 flex-wrap">
                         {
-                            ingredients.map((item) => (
+                            Object.keys(categorizeIngredients(item.ingredients)).map((category) => (
                                 <div className="">
-                                    <p className="font-semibold mb-2">{item.category}</p>
+                                    <p className="font-semibold mb-2">{category}</p>
                                     <FormGroup>
-                                    {item.ingredients.map((item)=> 
-                                    <FormControlLabel 
-                                    control={<Checkbox
-                                     onChange={()=>handleCheckBoxChange(item)}/>}
-                                    label={item}
-                                    />)}
-                                    
-                                    
+                                        {categorizeIngredients(item.ingredients)[category].map((item) =>
+                                            <FormControlLabel
+                                                key={item.id}
+                                                control={
+                                                    <Checkbox
+                                                        onChange={() => handleCheckBoxChange(item.name)} />}
+                                                label={item.name}
+                                            />)}
+
+
                                     </FormGroup>
                                 </div>
                             ))
@@ -78,11 +96,11 @@ const MenuCard = () => {
                     </div>
                     <div className="pt-5">
                         <Button
-                        type="submit"
-                        variant="contained" 
-                        disabled={false}
+                            type="submit"
+                            variant="contained"
+                            disabled={false}
                         >
-                            {true?"Προσθηκη στο καλαθι":"Μή διαθέσιμο"}
+                            {true ? "Προσθηκη στο καλαθι" : "Μή διαθέσιμο"}
                         </Button>
                     </div>
                 </form>

@@ -41,14 +41,14 @@ const Carousel = () => {
             },
         ], // Smooth continuous transition
     };
-    console.log("Settings: ", settings);
+
     return (
         <div className="pt-10 max-w-screen overflow-hidden">
             <Slider key={window.innerWidth} {...settings}>
-                {carouselFood.map((item) => 
-                    <CarouselItem 
-                    image={item.image} 
-                    title={item.title}
+                {carouselFood.map((item) =>
+                    <CarouselItem
+                        image={item.image}
+                        title={item.title}
                     />)}
             </Slider>
         </div>

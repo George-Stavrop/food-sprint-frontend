@@ -5,18 +5,19 @@ import AddressCard from "./AddressCard";
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import { createOrder } from "../State/Order/Action";
 
 
-const items = [1, 1]
 
-const style = {
+export const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    border: '2px solid #f27022',
     boxShadow: 24,
     p: 4,
     outline: "none",
@@ -47,23 +48,41 @@ const Cart = () => {
 
     const [open, setOpen] = React.useState(false);
 
+    const { cart, auth } = useSelector(store => store);
+
     const handleClose = () => setOpen(false);
 
-    const handleSubmit = (value) => {
-        console.log(value)
+    const dispatch = useDispatch();
+
+    const handleSubmit = (values) => {
+        const data = {
+            jwt: localStorage.getItem("jwt"),
+            order: {
+                restaurantId: cart.cartItems[0].food?.restaurant.id,
+                deliveryAddress: {
+                    fullName: auth.user?.fullName,
+                    streetAddress: values.streetAddress,
+                    city: values.city,
+                    pinCode: values.pincode,
+                    area: values.area
+                }
+            }
+        }
+        dispatch(createOrder(data));
+        console.log(values)
     }
     return (
         <>
             <main className="lg:flex justify-between">
                 <section className="lg:w-[30%] space-y-6 lg:min-h-screen pt-10">
-                    {items.map((item) => (<CartItem />))}
+                    {cart.cartItems.map((item) => (<CartItem item={item} />))}
                     <Divider />
                     <div className="billDetails px-5 text-sm">
                         <p className="font-extralight py-5 pl-8 text-base font-medium" style={{ color: "#3e2b1f" }}>Λεπτομέρειες Παραγελίας</p> {/* Dark brown */}
                         <div className="space-y-3">
                             <div className="flex justify-between" style={{ color: "#4a3c31" }}> {/* Soft brown */}
                                 <p className=" font-medium">Παραγγελια</p>
-                                <p>5,50&euro;</p>
+                                <p>{cart.cart?.total}&euro;</p>
                             </div>
                             <div className="flex justify-between" style={{ color: "#4a3c31" }}>
                                 <p>Κόστος Delivery</p>
@@ -73,7 +92,7 @@ const Cart = () => {
                         </div>
                         <div className="mt-3 flex justify-between" style={{ color: "#3e2b1f" }}>
                             <p className=" font-medium text-lg">Σύνολο Πληρωμής</p>
-                            <p className="text-lg">6,00&euro;</p>
+                            <p className="text-lg">{cart.cart.total + 0.5}&euro;</p>
                         </div>
                     </div>
                 </section>

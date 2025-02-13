@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import foodImage from './assets/right_img.png';
 import Carousel from './Carousel';
 import RestaurantCard from '../Restaurant/RestaurantCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllRestaurantsAction } from '../State/Restaurant/Action';
 
 
-const restaraunt = [1, 1, 1, 1, 1, 1]
+const restaurants = [1, 1, 1, 1, 1, 1]
 export const Home = () => {
+
+  const dispatch = useDispatch();
+  const jwt = localStorage.getItem("jwt");
+  const { restaurant } = useSelector(store => store);
+
+  console.log("restaurant", restaurant)
+
+  useEffect(() => {
+    dispatch(getAllRestaurantsAction(jwt))
+
+  }, [])
+
   return (
     <div className='pb-10'>
       <section className="home-container flex flex-col md:flex-row justify-between items-center min-h-screen p-10 ">
@@ -36,13 +50,13 @@ export const Home = () => {
         <Carousel />
       </section>
 
-      <section className='mt-[5rem] px-5 lg:px-20'>
-        <h1 className='text-2xl font-semibold text-gray-200 py-3'>
+      <section className='mt-[5rem] px-5 '>
+        <h1 className='text-2xl font-semibold text-red-200 py-3'>
           Απο τα καλύτερα καταστήματα του Βόλου
         </h1>
         <div className='mt-8 flex flex-wrap items-center justify-around gap-10'>
           {
-            restaraunt.map((item) => <RestaurantCard />)
+            restaurant.restaurants.map((item) => <RestaurantCard item={item} />)
           }
         </div>
       </section>
