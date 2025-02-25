@@ -1,10 +1,10 @@
-import { Avatar, Box, Card, CardHeader, Chip, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Avatar, Box, Button, Card, CardHeader, Chip, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import CreateIcon from '@mui/icons-material/Create';
 import { Delete } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getMenuItemByRestaurantId } from "../../component/State/Menu/Action";
+import { getMenuItemByRestaurantId, updateMenuItemsAvailability } from "../../component/State/Menu/Action";
 
 
 
@@ -13,17 +13,21 @@ const MenuTable = () => {
 
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
-    const { restaurant, ingredients, menu } = useSelector(store => store);
+    const { restaurant, ingredients, menu, auth } = useSelector(store => store);
     const navigate = useNavigate();
+    const handleFoodAvialability = (foodId) => {
+        dispatch(updateMenuItemsAvailability({ foodId, jwt: auth.jwt || jwt }));
+    };
+
 
     useEffect(() => {
         dispatch(getMenuItemByRestaurantId({
             jwt,
-            restaurantId: restaurant.usersRestaurant.id,
+            restaurantId: restaurant.usersRestaurant?.id,
             foodCategory: "",
 
         }))
-    }, [])
+    }, [ingredients.update, restaurant.usersRestaurant])
 
     return (
         <Box>
@@ -53,7 +57,7 @@ const MenuTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {menu.menuItems.map((item) => (
+                        {menu.menuItems?.map((item) => (
                             <TableRow
                                 key={item.name}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -66,7 +70,16 @@ const MenuTable = () => {
                                     {item.ingredients.map((ingredient) => <span>{ingredient.name}</span>)}
                                 </TableCell>
                                 <TableCell align="right">{item.price}&euro;</TableCell>
-                                <TableCell align="right">{item.available ? "Διαθέσιμο" : "Μή Διαθέσιμο"}</TableCell>
+                                <TableCell align="right">
+                                    <Button
+                                        color={item.available ? "success" : "error"}
+                                        variant="text"
+                                        onClick={() => handleFoodAvialability(item.id)}
+                                    >
+                                        {item.available ? "Διαθέσιμο" : "Μή Διαθέσιμο"}
+                                    </Button>
+
+                                </TableCell>
 
 
                             </TableRow>

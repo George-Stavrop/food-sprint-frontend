@@ -23,7 +23,7 @@ export const Admin = () => {
                 </div>
                 <div className="lg:w-[80%]">
                     <Routes>
-                        <Route path="/" element={<Dashboard />} />
+                        <Route path="/" element={<Restaurant />} />
                         <Route path="/παραγγελίες" element={<Orders />} />
                         <Route path="/μενού" element={<Menu />} />
                         <Route path="/εστιατόριο" element={<Restaurant />} />

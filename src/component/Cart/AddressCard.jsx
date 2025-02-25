@@ -9,7 +9,7 @@ const AddressCard = ({ item, showButton, handleSelectAddress }) => {
             <HomeIcon />
             <div className="space-y-3">
                 <h1 className="font-semibold text-lg">Home</h1>
-                <p>Σειληνού 9</p>
+                <p>{item.streetAddress}</p>
                 {showButton && (
                     < Button sx={{
                         backgroundColor: "#ff6347",

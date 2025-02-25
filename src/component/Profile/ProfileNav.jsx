@@ -8,12 +8,13 @@ import { Divider, Drawer, useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../State/Authentication/Action";
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 const menu = [
+    { title: "Προφίλ", icon: <AccountBoxIcon /> },
     { title: "Παραγγελίες", icon: < ShoppingBagIcon /> },
     { title: "Αγαπημένα", icon: < FavoriteIcon /> },
-    { title: "Διευθύνσεις", icon: < HomeIcon /> },
-    { title: "Πληρωμή", icon: < AccountBalanceWalletIcon /> },
+
     { title: "Έξοδος", icon: <LogoutIcon /> }
 ]
 const ProfileNav = ({ open, handleClose }) => {

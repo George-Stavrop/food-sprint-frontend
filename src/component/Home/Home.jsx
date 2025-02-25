@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllRestaurantsAction } from '../State/Restaurant/Action';
 
 
-const restaurants = [1, 1, 1, 1, 1, 1]
+
 export const Home = () => {
 
   const dispatch = useDispatch();
@@ -17,9 +17,10 @@ export const Home = () => {
   console.log("restaurant", restaurant)
 
   useEffect(() => {
-    dispatch(getAllRestaurantsAction(jwt))
-
-  }, [])
+    if (jwt) {
+      dispatch(getAllRestaurantsAction(jwt))
+    }
+  }, [jwt, dispatch])
 
   return (
     <div className='pb-10'>
@@ -46,12 +47,12 @@ export const Home = () => {
 
       </section>
 
-      <section className=' lg:py-10 lg:px-20'>
+      <section className=' lg:py-10 '>
         <Carousel />
       </section>
 
       <section className='mt-[5rem] px-5 '>
-        <h1 className='text-2xl font-semibold text-red-200 py-3'>
+        <h1 className='text-2xl text-center font-home text-orange-600 pt-8 pb-3'>
           Απο τα καλύτερα καταστήματα του Βόλου
         </h1>
         <div className='mt-8 flex flex-wrap items-center justify-around gap-10'>

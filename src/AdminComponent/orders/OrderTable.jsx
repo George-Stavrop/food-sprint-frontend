@@ -1,123 +1,202 @@
-import { Avatar, AvatarGroup, Box, Button, Card, CardHeader, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Avatar, AvatarGroup, Backdrop, Box, Button, Card, CardHeader, Chip, CircularProgress, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRestaurantOrder, updateOrderStatus } from "../../component/State/RestaurantOrder/Action";
+import { useNavigate, useParams } from "react-router-dom";
 
 const orderStatus = [
     { label: "Ετοιμάζεται", value: "Ετοιμάζεται" },
     { label: "Ολοκληρώθηκε", value: "Ολοκληρώθηκε" },
-    { label: "Σε διανομή", value: "Σε διανομή" },
+    { label: "Σε διανομή", value: "Σε_διανομή" },
     { label: "Έφτασε", value: "Έφτασε" },
+
+
 ];
 
-const OrderTable = () => {
+const OrderTable = ({ isDashboard, name }) => {
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({ status: "", sort: "" });
     const dispatch = useDispatch();
     const jwt = localStorage.getItem("jwt");
-    const { restaurant, restaurantOrder } = useSelector((store) => store);
+    const { restaurantOrder } = useSelector((store) => store);
+    const [anchorElArray, setAnchorElArray] = useState([]);
+    const { id } = useParams();
 
-    useEffect(() => {
-        dispatch(fetchRestaurantOrder({
-            jwt,
-            restaurantId: restaurant.usersRestaurant?.id,
-        }));
-    }, [dispatch, jwt, restaurant.usersRestaurant?.id]);
+    const handleUpdateStatusMenuClick = (event, index) => {
+        const newAnchorElArray = [...anchorElArray];
+        newAnchorElArray[index] = event.currentTarget;
+        setAnchorElArray(newAnchorElArray);
+    };
 
-    const handleUpdateOrder = (orderId, orderStatus) => {
+    const handleUpdateStatusMenuClose = (index) => {
+        const newAnchorElArray = [...anchorElArray];
+        newAnchorElArray[index] = null;
+        setAnchorElArray(newAnchorElArray);
+    };
+
+    const handleUpdateOrder = (orderId, orderStatus, index) => {
+        handleUpdateStatusMenuClose(index);
         dispatch(updateOrderStatus({ orderId, orderStatus, jwt }));
-        handleClose(orderId);
-    };
-
-    const [anchorEl, setAnchorEl] = useState({});
-
-    const handleClick = (event, orderId) => {
-        setAnchorEl((prev) => ({ ...prev, [orderId]: event.currentTarget }));
-    };
-
-    const handleClose = (orderId) => {
-        setAnchorEl((prev) => ({ ...prev, [orderId]: null }));
     };
 
     return (
         <Box>
             <Card className="mt-1">
-                <CardHeader title={"All Orders"} sx={{ pt: 2, alignItems: "center" }} />
+                <CardHeader
+                    title={name}
+                    sx={{
+                        pt: 2,
+                        alignItems: "center",
+                        "& .MuiCardHeader-action": { mt: 0.6 },
+                    }}
+                />
+                <TableContainer>
+                    <Table sx={{}} aria-label="table in dashboard">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Id</TableCell>
+                                <TableCell>Φωτογραφία</TableCell>
+                                {/* {!isDashboard && <TableCell>Title</TableCell>} */}
+                                <TableCell>Πελάτης</TableCell>
+                                <TableCell>Τιμή</TableCell>
+
+                                <TableCell>Όνομα</TableCell>
+                                {!isDashboard && <TableCell>Υλικά</TableCell>}
+                                {!isDashboard && <TableCell>Κατάσταση</TableCell>}
+                                {!isDashboard && (
+                                    <TableCell sx={{ textAlign: "center" }}>Αλλαγή</TableCell>
+                                )}
+                                {/* {!isDashboard && (
+                  <TableCell sx={{ textAlign: "center" }}>Delete</TableCell>
+                )} */}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {restaurantOrder.orders
+                                ?.slice(0, isDashboard ? 7 : restaurantOrder.orders.length)
+                                .map((item, index) => (
+                                    <TableRow
+                                        className="cursor-pointer"
+                                        hover
+                                        key={item.id}
+                                        sx={{
+                                            "&:last-of-type td, &:last-of-type th": { border: 0 },
+                                        }}
+                                    >
+                                        <TableCell>{item?.id}</TableCell>
+                                        <TableCell sx={{}}>
+                                            <AvatarGroup max={4} sx={{ justifyContent: "start" }}>
+                                                {item.items.map((orderItem) => (
+                                                    <Avatar
+                                                        alt={orderItem.food.name}
+                                                        src={orderItem.food?.images[0]}
+                                                    />
+                                                ))}
+                                            </AvatarGroup>{" "}
+                                        </TableCell>
+
+                                        <TableCell sx={{}}>
+                                            {item?.customer.email}
+                                        </TableCell>
+
+                                        <TableCell>{item?.totalPrice}&euro;</TableCell>
+
+                                        <TableCell className="">
+                                            {item.items.map((orderItem) => (
+                                                <p>
+                                                    -{orderItem.food?.name}
+                                                </p>
+                                            ))}
+                                        </TableCell>
+                                        {!isDashboard && <TableCell className="space-y-2">
+                                            {item.items.map((orderItem) =>
+                                                <div className="flex gap-1 flex-wrap">
+                                                    {orderItem.ingredients?.map((ingre) => (
+                                                        <Chip label={ingre} />
+                                                    ))}
+                                                </div>
+
+                                            )}
+                                        </TableCell>}
+                                        {!isDashboard && <TableCell className="text-white">
+                                            <Chip
+                                                sx={{
+                                                    color: "#f56f42",
+                                                    fontWeight: "bold",
+                                                    textAlign: "center",
+                                                }}
+                                                label={item?.orderStatus}
+                                                size="small"
+
+                                                className="text-white"
+                                            />
+                                        </TableCell>}
+                                        {!isDashboard && (
+                                            <TableCell
+                                                sx={{ textAlign: "center" }}
+                                                className="text-white"
+                                            >
+                                                <div>
+                                                    <Button
+                                                        id={`basic-button-${item?.id}`}
+                                                        aria-controls={`basic-menu-${item.id}`}
+                                                        aria-haspopup="true"
+                                                        aria-expanded={Boolean(anchorElArray[index])}
+                                                        onClick={(event) =>
+                                                            handleUpdateStatusMenuClick(event, index)
+                                                        }
+                                                    >
+                                                        Status
+                                                    </Button>
+                                                    <Menu
+                                                        id={`basic-menu-${item?.id}`}
+                                                        anchorEl={anchorElArray[index]}
+                                                        open={Boolean(anchorElArray[index])}
+                                                        onClose={() => handleUpdateStatusMenuClose(index)}
+                                                        MenuListProps={{
+                                                            "aria-labelledby": `basic-button-${item.id}`,
+                                                        }}
+                                                    >
+                                                        {orderStatus.map((s) => (
+                                                            <MenuItem
+                                                                onClick={() =>
+                                                                    handleUpdateOrder(item.id, s.value, index)
+                                                                }
+                                                            >
+                                                                {s.label}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </Menu>
+                                                </div>
+                                            </TableCell>
+                                        )}
+                                        {/* {!isDashboard && (
+                    <TableCell
+                      sx={{ textAlign: "center" }}
+                      className="text-white"
+                    >
+                      <Button
+                        onClick={() => handleDeleteOrder(item._id)}
+                        variant="text"
+                      >
+                        delete
+                      </Button>
+                    </TableCell>
+                  )} */}
+                                    </TableRow>
+                                ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             </Card>
 
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>id</TableCell>
-                            <TableCell align="right">Φωτογραφία</TableCell>
-                            <TableCell align="right">Πελάτης</TableCell>
-                            <TableCell align="right">Τιμή</TableCell>
-                            <TableCell align="right">Όνομα</TableCell>
-                            <TableCell align="right">Υλικά</TableCell>
-                            <TableCell align="right">Κατάσταση</TableCell>
-                            <TableCell align="right">Ενέργειες</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {restaurantOrder.orders.map((item) => (
-                            <TableRow key={item.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                <TableCell component="th" scope="row">{item.id}</TableCell>
-                                <TableCell align="right">
-                                    <AvatarGroup>
-                                        {item.items.map((orderItem, index) => (
-                                            <Avatar key={index} src={orderItem.food?.images[0]} />
-                                        ))}
-                                    </AvatarGroup>
-                                </TableCell>
-                                <TableCell align="right">{item.customer?.fullname}</TableCell>
-                                <TableCell align="right">{item.totalPrice}&euro;</TableCell>
-                                <TableCell align="right">
-                                    {item.items.map((orderItem, index) => <p key={index}>{orderItem.food?.name}</p>)}
-                                </TableCell>
-                                <TableCell align="right">
-                                    {item.items.map((orderItem, orderIndex) => (
-                                        <div key={orderIndex}>
-                                            {orderItem.ingredients.map((ingredient, index) => (
-                                                <span key={index}>
-                                                    {ingredient}{index < orderItem.ingredients.length - 1 ? ', ' : ''}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    ))}
-                                </TableCell>
-                                <TableCell align="right">{item.orderStatus}</TableCell>
-                                <TableCell align="right">
-                                    <Button
-                                        id={`basic-button-${item.id}`}
-                                        aria-controls={anchorEl[item.id] ? `basic-menu-${item.id}` : undefined}
-                                        aria-haspopup="true"
-                                        aria-expanded={Boolean(anchorEl[item.id])}
-                                        onClick={(event) => handleClick(event, item.id)}
-                                        sx={{ textTransform: 'none' }}
-                                    >
-                                        Αλλαγή
-                                    </Button>
-                                    <Menu
-                                        id={`basic-menu-${item.id}`}
-                                        anchorEl={anchorEl[item.id]}
-                                        open={Boolean(anchorEl[item.id])}
-                                        onClose={() => handleClose(item.id)}
-                                        MenuListProps={{ 'aria-labelledby': `basic-button-${item.id}` }}
-                                    >
-                                        {orderStatus.map((status) => (
-                                            <MenuItem
-                                                key={status.value}
-                                                onClick={() => handleUpdateOrder(item.id, status.value)}
-                                            >
-                                                {status.label}
-                                            </MenuItem>
-                                        ))}
-                                    </Menu>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+
+            <Backdrop
+                sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={restaurantOrder.loading}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </Box>
     );
 };

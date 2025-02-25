@@ -1,4 +1,5 @@
 import React from "react";
+import Logo from "./LogoFood.png"
 import { useEffect, useState } from "react";
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from "@mui/material";
@@ -42,48 +43,37 @@ export const Navbar = () => {
 
             <div className="lg:mr-10 cursor-pointer flex items-center space-x-4">
                 <div onClick={() => navigate("/")} className="logo font-semibold text-2xl">
-                    FoodSprint
+                    <img src={Logo} className="h-[75px] w-[230px]" alt="Logo" />
                 </div>
             </div>
 
             <div className="flex items-center space-x-4 lg:space-x-10">
-                <div>
-                    <IconButton aria-label="Search"
-                        sx={{ marginRight: "2rem" }}>
-                        <Box>
 
-                            <SearchIcon
-                                sx={{
-                                    fontSize: "2.5rem",
-                                    color: "#000",
-                                    background: 'linear-gradient(45deg, #ff9a9e, #edd28e)',
-                                    borderRadius: "50%",
-                                    padding: "0.5rem",
-
-                                }}
-                            />
-                        </Box>
-                    </IconButton>
-                </div>
 
                 <div>
                     {auth.user ? (
-                        <Avatar
+                        <IconButton
                             onClick={handleAvatarClick}
                             sx={{
                                 background: 'linear-gradient(45deg, #ff9a9e, #edd28e)',
                                 color: "#000",
-                                width: { xs: "2rem", lg: "2.5rem" },
-                                height: { xs: "2rem", lg: "2.5rem" },
+                                width: { xs: "2.5rem", lg: "3rem" },
+                                height: { xs: "2.5rem", lg: "3rem" },
+                                transition: "0.3s ease-in-out",
+                                border: "2px solid transparent",
+                                "&:hover": {
+                                    border: "4px solid #ff6b6b", // Outer layer color change
+                                },
                             }}
                         >
                             {auth.user?.fullname[0].toUpperCase()}
-                        </Avatar>
+                        </IconButton>
+
                     ) : (
                         <IconButton onClick={() => navigate("/account/login")}>
                             <Person sx={{
-                                width: { xs: "2rem", lg: "2.5rem" },
-                                height: { xs: "2rem", lg: "2.5rem" },
+                                width: { xs: "2.5rem", lg: "3rem" },
+                                height: { xs: "2.5rem", lg: "3rem" },
                             }} />
                         </IconButton>
                     )}
@@ -91,16 +81,29 @@ export const Navbar = () => {
 
 
                 <div>
-                    <IconButton onClick={() => navigate("/cart")} aria-label="Shopping basket" sx={{ paddingTop: "1rem" }}>
+                    <IconButton onClick={() => {
+                        navigate("/cart")
+                        window.location.reload();
+                    }}
+                        aria-label="Shopping basket" sx={{
+                            transition: "0.3s ease-in-out",
+
+                            "&:hover": {
+                                background: "linear-gradient(45deg, #ff9a9e, #edd28e)", // Outer layer color change
+                            },
+                        }}>
                         <Badge color="error" badgeContent={cart.cart?.items?.length} sx={{
+
                             '& .MuiBadge-badge': {
                                 minWidth: { xs: '1rem', lg: '1.5rem' }, // Badge width
                                 height: { xs: '1rem', lg: '1.5rem' },   // Badge height
                                 fontSize: { xs: '0.6rem', lg: '0.8rem' }, // Font size inside the badge
+
                             },
                         }}>
                             <ShoppingBasketIcon
                                 sx={{
+
                                     color: "#d1414f",
                                     width: { xs: "1.5rem", lg: "2rem" }, // Responsive width
                                     height: { xs: "1.5rem", lg: "2rem" },

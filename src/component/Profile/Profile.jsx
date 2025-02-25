@@ -20,7 +20,7 @@ const Profile = () => {
                 <Routes>
                     <Route path="/" element={<UserProfile />} />
                     <Route path="παραγγελίες" element={<Orders />} />
-                    <Route path="διευθύνσεις" element={<Address />} />
+                    <Route path="Προφίλ" element={<UserProfile />} />
                     <Route path="αγαπημένα" element={<Favorites />} />
                     <Route path="έξοδος" element={<Logout />} />
                     <Route path="πληρωμή" element={<Payment />} />

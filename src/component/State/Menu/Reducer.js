@@ -26,22 +26,22 @@ const menuItemReducer = (state = initialState, action) => {
         case actionTypes.CREATE_MENU_ITEM_SUCCESS:
             return {
                 ...state,
-                loading: true,
+                loading: false,
                 menuItems: [...state.menuItems, action.payload],
                 message: "Δημιουργήθηκε με επιτυχία"
             };
         case actionTypes.GET_MENU_ITEMS_BY_RESTAURANT_ID_SUCCESS:
             return {
                 ...state,
-                loading: true,
-                menuItems: action.payload
+                loading: false,
+                menuItems: Array.isArray(action.payload) ? action.payload : []
             };
         case actionTypes.DELETE_MENU_ITEM_SUCCESS:
             return {
                 ...state,
                 loading: false,
                 menuItems: state.menuItems.filter(
-                    (menuItem) => menuItem !== action.payload
+                    (menuItem) => menuItem.id !== action.payload
                 )
             };
         case actionTypes.UPDATE_MENU_ITEMS_AVAILABILITY_SUCCESS:
@@ -66,6 +66,7 @@ const menuItemReducer = (state = initialState, action) => {
         case actionTypes.SEARCH_MENU_ITEM_FAILURE:
             return {
                 ...state,
+                menuItems: [],
                 loading: false,
                 error: action.payload,
                 message: null

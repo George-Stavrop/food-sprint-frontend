@@ -18,12 +18,17 @@ const Orders = () => {
         <div className="flex items-center flex-col">
             <h1 className="text-xl py-7 font-semibold">Οι Παραγγελίες μου</h1>
             <div className="space-y-5 w-full lg:w-1/2">
-                {
-                    order.orders.map((order) => order.items.map((item) => <OrderCard order={order} item={item} />))
-                }
+                {order.orders.length > 0 ? (
+                    order.orders.map((order) =>
+                        order.items.map((item) => <OrderCard key={item.id} order={order} item={item} />)
+                    )
+                ) : (
+                    <p className="text-gray-500 text-center">Δεν υπάρχουν ακόμα παραγγελίες</p>
+                )}
             </div>
         </div>
-    )
+    );
+
 
 }
 

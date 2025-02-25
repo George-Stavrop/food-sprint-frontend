@@ -47,14 +47,6 @@ const Restaurant = () => {
                         <CardContent>
                             <div className="space-y-4">
                                 <div className="flex">
-                                    <p className="w-48">Ιδιοκτήτης</p>
-                                    <p className="">
-                                        <span className="pr-5">-</span>
-                                        {restaurant.usersRestaurant?.owner.fullname}
-                                    </p>
-
-                                </div>
-                                <div className="flex">
                                     <p className="w-48">Όνομα Εστιατορίου</p>
                                     <p className="">
                                         <span className="pr-5">-</span>
@@ -62,12 +54,15 @@ const Restaurant = () => {
 
                                 </div>
                                 <div className="flex">
-                                    <p className="w-48">Διέυθυνση</p>
+                                    <p className="w-48">Ιδιοκτήτης</p>
                                     <p className="">
                                         <span className="pr-5">-</span>
+                                        {restaurant.usersRestaurant?.owner.fullname}
                                     </p>
 
                                 </div>
+
+
                                 <div className="flex">
                                     <p className="w-48">Πόλη</p>
                                     <p className="">
@@ -84,10 +79,17 @@ const Restaurant = () => {
 
                                 </div>
                                 <div className="flex">
-                                    <p className="w-48">Ωράριο</p>
+                                    <p className="w-48">Email</p>
                                     <p className="">
                                         <span className="pr-5">-</span>
-                                        {restaurant.usersRestaurant?.openingHours}                                   </p>
+                                        {restaurant.usersRestaurant?.contactInformation.email}                                   </p>
+
+                                </div>
+                                <div className="flex">
+                                    <p className="w-48">Τηλέφωνο</p>
+                                    <p className="">
+                                        <span className="pr-5">-</span>
+                                        {restaurant.usersRestaurant?.contactInformation.mobile}                                   </p>
 
                                 </div>
                                 <div className="flex">

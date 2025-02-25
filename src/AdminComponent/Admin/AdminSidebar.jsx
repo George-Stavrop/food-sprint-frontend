@@ -9,10 +9,10 @@ import { useDispatch } from "react-redux";
 import { logout } from "../../component/State/Authentication/Action";
 
 const menu = [
-    { title: "Πίνακας Ελέγχου", icon: <Dashboard />, path: "/" },
+    { title: "Εστιατόριο", icon: <Dashboard />, path: "/" },
     { title: "Παραγγελίες", icon: <FastfoodIcon />, path: "/παραγγελίες" },
     { title: "Μενού", icon: <ShopTwo />, path: "/μενού" },
-    { title: "Εστιατόριο", icon: <AdminPanelSettingsIcon />, path: "/εστιατόριο" },
+
 
 
 ]
