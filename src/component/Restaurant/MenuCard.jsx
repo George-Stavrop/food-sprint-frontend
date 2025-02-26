@@ -44,13 +44,13 @@ const MenuCard = ({ item }) => {
 
     return (
         <Accordion
-            className="rounded-lg overflow-hidden shadow-md mb-4 bg-gray-200" // Tailwind for background color
+            className="rounded-lg overflow-hidden shadow-md mb-4 bg-gray-200"
         >
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1-content"
                 id="panel1-header"
-                className="bg-gray-200 border-b border-gray-300" // Tailwind background for summary
+                className="bg-gray-200 border-b border-gray-300"
             >
                 <div className="lg:flex items-start justify-between">
                     <div className="flex items-start">

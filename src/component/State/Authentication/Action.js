@@ -72,25 +72,6 @@ export const getUser = (jwt) => async (dispatch) => {
 }
 
 
-export const addToFavorite = ({ jwt, restaurantId }) => async (dispatch) => {
-
-    dispatch({ type: ADD_TO_FAVORITE_REQUEST })
-    try {
-        const { data } = await api.put(`/api/restaurants/${restaurantId}
-            /add-favorites`, {}, {
-            headers: {
-                Authorization: `Bearer ${jwt}`
-            }
-        })
-
-
-        dispatch({ type: ADD_TO_FAVORITE_SUCCESS, payload: data })
-        console.log("added to favorite", data)
-
-    } catch (error) {
-        console.log("error");
-    }
-}
 
 
 export const logout = () => async (dispatch) => {
@@ -104,7 +85,7 @@ export const logout = () => async (dispatch) => {
         console.log("logout success")
 
     } catch (error) {
-        dispatch({ type: ADD_TO_FAVORITE_FAILURE, payload: error })
+
         console.log("error");
     }
 }

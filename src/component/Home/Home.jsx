@@ -51,7 +51,7 @@ export const Home = () => {
         <Carousel />
       </section>
 
-      <section className='mt-[5rem] px-5 '>
+      {jwt && (<section className='mt-[5rem] px-5 '>
         <h1 className='text-2xl text-center font-home text-orange-600 pt-8 pb-3'>
           Απο τα καλύτερα καταστήματα του Βόλου
         </h1>
@@ -61,6 +61,7 @@ export const Home = () => {
           }
         </div>
       </section>
+      )}
 
 
     </div>

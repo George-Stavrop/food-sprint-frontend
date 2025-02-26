@@ -6,8 +6,7 @@ import Chip from "@mui/material/Chip";
 import urbanBurger from "./restaurantAssets/urbanBurger.jpeg"
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { isPresentInFavorites } from "../config/logic";
-import { addToFavorite } from "../State/Authentication/Action";
+
 
 const RestaurantCard = ({ item }) => {
 
@@ -16,9 +15,7 @@ const RestaurantCard = ({ item }) => {
     const jwt = localStorage.getItem("jwt");
     const { auth } = useSelector(store => store);
 
-    const handleAddToFavorites = () => {
-        dispatch(addToFavorite({ restaurantId: item.id, jwt }))
-    }
+
 
     const handleNavigateToRestaurant = () => {
         if (item.open) {
@@ -48,11 +45,7 @@ const RestaurantCard = ({ item }) => {
                         {item.description}
                     </p>
                 </div>
-                <div>
-                    <IconButton onClick={handleAddToFavorites}>
-                        {isPresentInFavorites(auth.favorites, item) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                    </IconButton>
-                </div>
+
             </div>
         </Card>
     )

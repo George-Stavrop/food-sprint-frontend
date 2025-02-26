@@ -12,22 +12,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getRestaurantById, getRestaurantsCategory } from "../State/Restaurant/Action";
 import { getMenuItemByRestaurantId } from "../State/Menu/Action";
 
-const categories = [
-    "burger",
-    "sandwich",
-    "club sandwich",
-    "crepe",
-    "giros",
-    "pasta",
-];
 
-const menu = [1, 1, 1, 1, 1, 1]
 
 const RestaurantDetails = () => {
-    const RestaurantDetails = {
-        image: restaurantImage,
-        name: "Smokers",
-    };
 
     const { id, city } = useParams();
 
@@ -58,7 +45,7 @@ const RestaurantDetails = () => {
     return (
         <div className="">
             <section className="px-5 lg:px-20">
-                <div className=" h-25 sm:h-40  lg:h-80    ">
+                <div className=" h-25 sm:h-40  lg:h-80">
                     <img
                         src={restaurant.restaurant?.images[0]}
 
@@ -68,7 +55,7 @@ const RestaurantDetails = () => {
 
                 <div className="pt-3 pb-5  border-2 shadow-lg border-t-0 border-l-0"
                     style={{
-                        borderColor: "rgba(100, 100, 100, 0.8)", // Tomato color to match the gradient
+                        borderColor: "rgba(100, 100, 100, 0.8)",
                         background: "linear-gradient(135deg, rgba(255, 99, 71, 0.1), rgba(0, 0, 0, 0.1))",
                     }}>
                     <div className="flex items-center gap-3">

@@ -20,8 +20,8 @@ const UserProfile = () => {
             <div className='flex flex-col items-center justify-center'>
                 <AccountCircleIcon sx={{ fontSize: "9rem", color: "#fc5e03" }} />
                 <h1 className='py-5 text-2xl font-semibold'>{auth.user?.fullname}</h1>
-                <p>Email : {auth.user?.email}</p>
-                <Button onClick={handleLogout} variant='contained' sx={{ margin: "2rem 0rem" }}>Εξοδος</Button>
+                <p><span className='font-semibold'>Email:</span> {auth.user?.email}</p>
+
             </div>
         </div>
     )

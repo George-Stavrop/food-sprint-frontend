@@ -1,8 +1,7 @@
 import { Dashboard, ShoppingBag, ShopTwo } from "@mui/icons-material";
 import FastfoodIcon from '@mui/icons-material/Fastfood';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import LogoutIcon from '@mui/icons-material/Logout';
-import React from "react";
+import React, { useState } from "react";
 import { Divider, Drawer, useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -12,64 +11,72 @@ const menu = [
     { title: "Εστιατόριο", icon: <Dashboard />, path: "/" },
     { title: "Παραγγελίες", icon: <FastfoodIcon />, path: "/παραγγελίες" },
     { title: "Μενού", icon: <ShopTwo />, path: "/μενού" },
+];
 
-
-
-]
-
-export const AdminSidebar = ({ handleClose }) => {
+export const AdminSidebar = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
+    const isSmallScreen = useMediaQuery("(max-width:1080px)");
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleNavigate = (item) => {
-        navigate(`/admin/restaurant${item.path}`)
-    }
+        navigate(`/admin/restaurant${item.path}`);
+        if (isSmallScreen) setIsOpen(false);
+    };
 
     const handleLogout = () => {
-        navigate('/');
         dispatch(logout());
-        handleClose();
-    }
-
-    const isSmallScreen = useMediaQuery("(max-width:1080px)")
+        navigate('/');
+        if (isSmallScreen) setIsOpen(false);
+    };
 
     return (
-        <div>
-            <>
-                <Drawer
-                    variant={isSmallScreen ? "temporary" : "permanent"}
-                    onClose={handleClose}
-                    open={true}
-                    anchor='left'
-                    sx={{ zIndex: 1, }}>
+        <>
+            {isSmallScreen && (
+                <button
+                    className="fixed top-5 left-5 z-50 p-2 bg-orange-500 text-white rounded-md"
+                    onClick={() => setIsOpen(true)}
+                >
+                    ☰ Μενού
+                </button>
+            )}
 
-                    <div className="w-[70vw] lg:w-[20vw] my-10 h-screen flex flex-col text-xl space-y-[1.65rem]">
-
-                        <div className="flex-grow">
-                            {menu.map((item) => (
-                                <React.Fragment key={item.title}>
-                                    <div onClick={() => handleNavigate(item)} className="px-5 my-10 flex items-center gap-5 cursor-pointer" style={{ fontFamily: "'Poppins', sans-serif" }}>
-                                        <span>{React.cloneElement(item.icon, { sx: { color: "#f27022" } })}</span>
-                                        <span >{item.title}</span>
-
-                                    </div>
-                                    <Divider sx={{ height: "3px" }} />
-                                </React.Fragment>
-                            ))}
-                        </div>
-
-                        <div className="px-5 flex items-center gap-5 cursor-pointer mt-auto">
-                            <LogoutIcon />
-                            <span onClick={handleLogout}>Έξοδος</span>
-                        </div>
-
+            <Drawer
+                variant={isSmallScreen ? "temporary" : "permanent"}
+                onClose={() => setIsOpen(false)}
+                open={isSmallScreen ? isOpen : true}
+                anchor='left'
+                sx={{ zIndex: 1 }}
+            >
+                <div className="w-[70vw] lg:w-[20vw] my-10 h-screen flex flex-col text-xl space-y-4">
+                    {/* Menu Items */}
+                    <div className="flex-grow">
+                        {menu.map((item) => (
+                            <React.Fragment key={item.title}>
+                                <div
+                                    onClick={() => handleNavigate(item)}
+                                    className="px-5 my-10 flex items-center gap-5 cursor-pointer hover:text-[#f58142]"
+                                >
+                                    <span>{item.icon}</span>
+                                    <span>{item.title}</span>
+                                </div>
+                                <Divider sx={{ height: "2px" }} />
+                            </React.Fragment>
+                        ))}
                     </div>
 
-                </Drawer>
-            </>
-        </div>
-    )
-}
+                    {/* Logout Button */}
+                    <div
+                        className="px-5 flex items-center gap-5 cursor-pointer mt-auto hover:bg-red-500 hover:text-white p-3 rounded-lg transition-all duration-200"
+                        onClick={handleLogout}
+                    >
+                        <LogoutIcon />
+                        <span>Έξοδος</span>
+                    </div>
+                </div>
+            </Drawer>
+        </>
+    );
+};
 
 export default AdminSidebar;

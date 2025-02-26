@@ -30,7 +30,7 @@ export const Navbar = () => {
 
     useEffect(() => {
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50); // Change height when scrolled more than 50px
+            setIsScrolled(window.scrollY > 50);
         };
 
         window.addEventListener("scroll", handleScroll);
@@ -62,7 +62,7 @@ export const Navbar = () => {
                                 transition: "0.3s ease-in-out",
                                 border: "2px solid transparent",
                                 "&:hover": {
-                                    border: "4px solid #ff6b6b", // Outer layer color change
+                                    border: "4px solid #ff6b6b",
                                 },
                             }}
                         >
@@ -71,6 +71,7 @@ export const Navbar = () => {
 
                     ) : (
                         <IconButton onClick={() => navigate("/account/login")}>
+                            <p className="text-lg pr-2">Είσοδος/εγγραφή</p>
                             <Person sx={{
                                 width: { xs: "2.5rem", lg: "3rem" },
                                 height: { xs: "2.5rem", lg: "3rem" },
@@ -89,15 +90,15 @@ export const Navbar = () => {
                             transition: "0.3s ease-in-out",
 
                             "&:hover": {
-                                background: "linear-gradient(45deg, #ff9a9e, #edd28e)", // Outer layer color change
+                                background: "linear-gradient(45deg, #ff9a9e, #edd28e)",
                             },
                         }}>
                         <Badge color="error" badgeContent={cart.cart?.items?.length} sx={{
 
                             '& .MuiBadge-badge': {
-                                minWidth: { xs: '1rem', lg: '1.5rem' }, // Badge width
-                                height: { xs: '1rem', lg: '1.5rem' },   // Badge height
-                                fontSize: { xs: '0.6rem', lg: '0.8rem' }, // Font size inside the badge
+                                minWidth: { xs: '1rem', lg: '1.5rem' },
+                                height: { xs: '1rem', lg: '1.5rem' },
+                                fontSize: { xs: '0.6rem', lg: '0.8rem' },
 
                             },
                         }}>
@@ -105,7 +106,7 @@ export const Navbar = () => {
                                 sx={{
 
                                     color: "#d1414f",
-                                    width: { xs: "1.5rem", lg: "2rem" }, // Responsive width
+                                    width: { xs: "1.5rem", lg: "2rem" },
                                     height: { xs: "1.5rem", lg: "2rem" },
                                 }} />
                         </Badge>

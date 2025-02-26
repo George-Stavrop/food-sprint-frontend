@@ -17,7 +17,7 @@ const Orders = () => {
     return (
         <div className="flex items-center flex-col">
             <h1 className="text-xl py-7 font-semibold">Οι Παραγγελίες μου</h1>
-            <div className="space-y-5 w-full lg:w-1/2">
+            <div className="space-y-5 w-[50%] lg:w-1/2">
                 {order.orders.length > 0 ? (
                     order.orders.map((order) =>
                         order.items.map((item) => <OrderCard key={item.id} order={order} item={item} />)
