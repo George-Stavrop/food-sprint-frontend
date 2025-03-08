@@ -15,7 +15,7 @@ const Profile = () => {
 
             {isSmallScreen && (
                 <button
-                    className="fixed w-[60px] top-40 left-10 z-50 p-2 bg-orange-500 text-white rounded-md"
+                    className="fixed w-[60px] top-37 left-0 z-50 p-2 bg-orange-500 text-white rounded-md"
                     onClick={() => setIsOpen(true)}
                 >
                     ☰
